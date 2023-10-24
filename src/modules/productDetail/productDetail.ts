@@ -4,6 +4,7 @@ import { formatPrice } from '../../utils/helpers';
 import { ProductData } from 'types';
 import html from './productDetail.tpl.html';
 import { cartService } from '../../services/cart.service';
+import { cartFavorite } from '../../services/cartFavorite.service';
 
 class ProductDetail extends Component {
   more: ProductList;
@@ -32,6 +33,7 @@ class ProductDetail extends Component {
     this.view.description.innerText = description;
     this.view.price.innerText = formatPrice(salePriceU);
     this.view.btnBuy.onclick = this._addToCart.bind(this);
+    this.view.btnFav.onclick = this._addFavoriteToCart.bind(this);
 
     const isInCart = await cartService.isInCart(this.product);
 
@@ -57,9 +59,30 @@ class ProductDetail extends Component {
     this._setInCart();
   }
 
+  private async _addFavoriteToCart() {
+    if (!this.product) return;
+
+    // Проверка, находится ли товар в избранном
+    const isInFavorite = await cartFavorite.isInCart(this.product);
+
+    if (isInFavorite) {
+        cartFavorite.removeProduct(this.product);
+        this._setNotInFavoriteCart();
+    } else {
+        cartFavorite.addProduct(this.product);
+        this._setInFavoriteCart(); 
+    }
+}
+
   private _setInCart() {
     this.view.btnBuy.innerText = '✓ В корзине';
     this.view.btnBuy.disabled = true;
+  }
+  private _setNotInFavoriteCart() {
+    // место для изменения стиля кнопки btnFav
+}
+  private _setInFavoriteCart() {
+    // место для изменения стиля кнопки btnFav
   }
 }
 

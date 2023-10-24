@@ -1,4 +1,5 @@
 import { catalogComp } from './modules/catalog/catalog';
+import { favoritesComp } from './modules/favorites/favorites';
 import { notFoundComp } from './modules/notFound/notFound';
 import { homepageComp } from './modules/homepage/homepage';
 import { productDetailComp } from './modules/productDetail/productDetail';
@@ -8,7 +9,8 @@ const ROUTES = {
   '/': homepageComp,
   '/catalog': catalogComp,
   '/product': productDetailComp,
-  '/checkout': checkoutComp
+  '/checkout': checkoutComp,
+  '/favorites': favoritesComp
 };
 
 export default class Router {
