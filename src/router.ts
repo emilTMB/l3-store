@@ -4,6 +4,7 @@ import { notFoundComp } from './modules/notFound/notFound';
 import { homepageComp } from './modules/homepage/homepage';
 import { productDetailComp } from './modules/productDetail/productDetail';
 import { checkoutComp } from './modules/checkout/checkout';
+import { sendEvent } from './services/event.service';
 
 const ROUTES = {
   '/': homepageComp,
@@ -26,6 +27,12 @@ export default class Router {
 
   route(e: any) {
     e.preventDefault();
+
+    sendEvent({
+      type: 'route',
+      payload: { url: window.location.href },
+      timestamp: Date.now(),
+    });
 
     // @ts-ignore
     const component = ROUTES[window.location.pathname] || notFoundComp;

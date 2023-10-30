@@ -5,6 +5,7 @@ import { ProductData } from 'types';
 import html from './productDetail.tpl.html';
 import { cartService } from '../../services/cart.service';
 import { cartFavorite } from '../../services/cartFavorite.service';
+import { sendEvent } from '../../services/event.service';
 
 class ProductDetail extends Component {
   more: ProductList;
@@ -50,13 +51,35 @@ class ProductDetail extends Component {
       .then((products) => {
         this.more.update(products);
       });
-  }
+  
+    let eventType = 'viewCard';
+    if (typeof this.product.log === 'string' && this.product.log.trim() !== '') {
+      eventType = 'viewCardPromo';
+    }
+    
+    const payload = {
+      ...this.product,
+      secretKey: this.view.secretKey.getAttribute('content'),
+    };
+
+    sendEvent({
+      type: eventType,
+      payload,
+      timestamp: Date.now(),
+    });
+    }
 
   private _addToCart() {
     if (!this.product) return;
 
     cartService.addProduct(this.product);
     this._setInCart();
+
+    sendEvent({
+      type: 'addToCard',
+      payload: this.product,
+      timestamp: Date.now(),
+    });
   }
 
   private async _addFavoriteToCart() {
