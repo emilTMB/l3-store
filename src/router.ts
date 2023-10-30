@@ -5,13 +5,15 @@ import { homepageComp } from './modules/homepage/homepage';
 import { productDetailComp } from './modules/productDetail/productDetail';
 import { checkoutComp } from './modules/checkout/checkout';
 import { sendEvent } from './services/event.service';
+import { searchSuggestionsComp } from './modules/suggestions/suggestions';
 
 const ROUTES = {
   '/': homepageComp,
   '/catalog': catalogComp,
   '/product': productDetailComp,
   '/checkout': checkoutComp,
-  '/favorites': favoritesComp
+  '/favorites': favoritesComp,
+  '/searchSuggestion':searchSuggestionsComp
 };
 
 export default class Router {
