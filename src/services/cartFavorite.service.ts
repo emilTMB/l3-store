@@ -5,7 +5,6 @@ const DB = '__wb-favotite';
 
 class CartFavorite {
   init() {
-    this._updCounters();
     this._updateFavoritesButtonVisibility();
   }
 
@@ -33,7 +32,6 @@ class CartFavorite {
   }
   async clear() {
     await localforage.removeItem(DB);
-    this._updCounters();
   }
 
   async get(): Promise<ProductData[]> {
@@ -42,20 +40,11 @@ class CartFavorite {
 
   async set(data: ProductData[]) {
     await localforage.setItem(DB, data);
-    this._updCounters();
   }
 
   async isInCart(product: ProductData) {
     const products = await this.get();
     return products.some(({ id }) => id === product.id);
-  }
-
-  private async _updCounters() {
-    const products = await this.get();
-    const count = products.length >= 10 ? '9+' : products.length;
-
-    //@ts-ignore
-    document.querySelectorAll('.').forEach(($el: HTMLElement) => ($el.innerText = String(count || '')));
   }
 }
 

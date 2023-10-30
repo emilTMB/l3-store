@@ -1,7 +1,6 @@
 import { Component } from '../component';
 import { Product } from '../product/product';
 import html from './favorites.tpl.html';
-import { formatPrice } from '../../utils/helpers';
 import { cartFavorite } from '../../services/cartFavorite.service';
 import { ProductData } from 'types';
 
@@ -21,21 +20,6 @@ class Favorites extends Component {
       productComp.render();
       productComp.attach(this.view.cart);
     });
-
-    const totalPrice = this.products.reduce((acc, product) => (acc += product.salePriceU), 0);
-    this.view.price.innerText = formatPrice(totalPrice);
-
-    this.view.btnOrder.onclick = this._makeOrder.bind(this);
-  }
-
-  private async _makeOrder() {
-    await cartFavorite.clear();
-    fetch('/api/makeOrder', {
-      method: 'POST',
-      body: JSON.stringify(this.products)
-    });
-    window.location.href = '/?isSuccessOrder';
   }
 }
-
 export const favoritesComp = new Favorites(html);
